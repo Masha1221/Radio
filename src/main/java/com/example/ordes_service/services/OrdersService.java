@@ -25,7 +25,6 @@ public class OrdersService {
         return orderEntity;
     }
 
-
     public List<OrderDto> getAllOrdersByUserId(Integer userId) {
         return ordersRepository.findOrderEntitiesByUserId(userId)
                 .stream()
@@ -34,16 +33,14 @@ public class OrdersService {
                 .collect(Collectors.toList());
     }
 
-    public void updateOrderStatusByUserId(OrderDto orderDto, Integer orderId, Integer userId) {
-        List<OrderEntity> orderEntities = ordersRepository.findOrderEntitiesByUserId(userId);
-        for (OrderEntity order : orderEntities) {
-            if (order.getId() == orderId) {
-                order.setStatus(orderDto.getStatus());
-                ordersRepository.save(order);
-                orderDto.setName(order.getName());
-                orderDto.setUserId(userId);
-            }
-        }
+    public void updateOrderStatusForUser(OrderDto orderDto, Integer orderId, Integer userId) {
+        OrderEntity order = ordersRepository.findOrderEntityByIdAndUserId(orderId, userId);
+        if (order != null) {
+            order.setStatus(orderDto.getStatus());
+            ordersRepository.save(order);
+            orderDto.setName(order.getName());
+            orderDto.setUserId(userId);
+        } else throw new RuntimeException("Failed to find order by order id or user id.");
     }
 
     public void createOrder(OrderDto orderDto) {

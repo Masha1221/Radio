@@ -25,7 +25,7 @@ public class OrdersController {
     public void updateStatusOrderByUserId(@RequestBody OrderDto orderDto,
                                           @PathVariable Integer userId,
                                           @PathVariable Integer orderId) {
-        orderService.updateOrderStatusByUserId(orderDto, orderId, userId);
+        orderService.updateOrderStatusForUser(orderDto, orderId, userId);
         log.info("New order status - {} ", orderDto.getStatus());
     }
 
