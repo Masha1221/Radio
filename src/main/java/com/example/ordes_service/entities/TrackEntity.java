@@ -1,17 +1,18 @@
 package com.example.ordes_service.entities;
 
-import com.example.ordes_service.enums.OrderStatus;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Accessors(chain = true)
 @Data
-@Table(name = "orders")
-public class OrderEntity implements Serializable {
+@Table(name = "tracks")
+public class TrackEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +22,7 @@ public class OrderEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "userId")
-    private int userId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private OrderStatus status;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "artists")
+    private List<ArtistEntity> artists;
 }
